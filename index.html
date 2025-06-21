@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonholândia S.A.</title>
+  <style>
+    /* Estilos Base */
+    body {
+      background-color: black;
+      color: #f0eada;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      padding: 40px;
+      margin: 0;
+      cursor: default;
+    }
+    
+    /* Elementos Interativos */
+    button, input, a {
+      position: relative;
+      z-index: 1000;
+    }
+    
+    /* Cabeçalho */
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 100;
+    }
+    
+    /* Textos */
+    p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 100;
+      cursor: text;
+    }
+
+    .dica{
+        background-color: #000;
+        color: #000;
+        cursor: text;
+    }
+    
+    /* Campo de Senha */
+    input[type="password"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 300px;
+      text-align: center;
+      border: none;
+      background-color: #222;
+      color: #f0eada;
+      margin: 10px 0;
+    }
+    
+    /* Botões Principais */
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #444;
+      color: #f0eada;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    button:hover {
+      background-color: #555;
+    }
+    
+    /* Conteúdo Secreto */
+    #conteudoSecreto {
+      display: none;
+      margin-top: 40px;
+      border-top: 1px solid #555;
+      padding-top: 30px;
+      position: relative;
+      z-index: 100;
+    }
+    
+    /* Efeito Glitch */
+    .glitch {
+      font-family: monospace;
+      animation: glitch 1s infinite;
+    }
+    
+    @keyframes glitch {
+      0% { opacity: 1; }
+      20% { opacity: 0.8; }
+      40% { opacity: 0.6; }
+      60% { opacity: 0.9; }
+      80% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    
+    /* Elementos Secretos */
+    #botaoSecreto {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      opacity: 0.1;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+    
+    #botaoSecreto:hover {
+      opacity: 0.5;
+    }
+    
+    /* Modo UV */
+    .uv-mode {
+      background-color: #1a0033 !important;
+      color: #ff00ff !important;
+    }
+    
+    .texto-oculto {
+      color: transparent;
+      text-shadow: 0 0 8px rgba(255,255,255,0.3);
+    }
+    
+    .texto-oculto::selection {
+      background: #ff00ff;
+      color: black;
+      text-shadow: none;
+    }
+    
+    /* Botão Lanterna UV */
+    #lanternaBtn {
+      position: fixed;
+      bottom: 70px;
+      right: 20px;
+      background-color: #330066;
+      color: #ff00ff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+    
+    body.show-secrets #lanternaBtn {
+      opacity: 0.7;
+    }
+    
+    body.uv-mode .texto-oculto {
+      color: #ff00ff;
+      text-shadow: 0 0 5px #ff00ff;
+    }
+    
+    /* Container Secreto */
+    #segredoContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    
+    #segredoContent {
+      max-width: 600px;
+      padding: 20px;
+      background-color: #111;
+      border: 1px solid #ff00ff;
+      position: relative;
+      z-index: 2001;
+    }
+    
+    /* Botão Fechar */
+    #fecharSegredo {
+      margin-top: 20px;
+      background-color: #ff00ff;
+      color: black;
+      cursor: pointer;
+      padding: 10px 20px;
+    }
+    
+    /* Link Secreto */
+    .clickable-secret {
+      cursor: pointer;
+      color: #ff00ff;
+      text-decoration: none;
+      padding: 10px;
+      margin: 15px 0;
+      display: inline-block;
+    }
+    
+    .clickable-secret:hover {
+      text-shadow: 0 0 5px #ff00ff;
+      background-color: rgba(255, 0, 255, 0.1);
+    }
+    
+    /* Lista */
+    ul {
+      list-style: none;
+      padding-left: 0;
+      text-align: left;
+      max-width: 500px;
+      margin: 20px auto;
+    }
+    
+    li {
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <!-- Botão Secreto (canto inferior direito) -->
+  <button id="botaoSecreto" title="Acesso Secreto"></button>
+  
+  <!-- Botão Lanterna UV (aparece após ativar segredos) -->
+  <button id="lanternaBtn" title="Modo Lanterna UV">UV</button>
+  
+  <!-- Conteúdo Principal -->
+  <h1 class="glitch">SONHOLÂNDIA S.A.</h1>
+  <p>Você é especial. Você foi escolhido.</p>
+  <p>Digite a senha para acessar o Armazém 4.</p>
+
+  <input type="password" id="senha" placeholder="Digite a senha">
+  <br>
+  <button id="acessarBtn">Acessar</button>
+
+  <!-- Conteúdo Secreto (aparece após senha correta) -->
+  <div id="conteudoSecreto">
+    <h2>ARMAZÉM 4 — ACESSO AUTORIZADO</h2>
+    <p><strong>Data de bloqueio:</strong> 14/11/1989</p>
+    <p><strong>Status:</strong> Lacre Violado</p>
+
+    <h3>Relatório 003-B</h3>
+    <p>“O brinquedo modelo FZ-82 apresentou comportamento anômalo. Registros auditivos mostram frases não programadas. Desapareceu após o incidente.”</p>
+
+    <h3>Relatório 004-C</h3>
+    <p>“Funcionários relataram movimentação no setor de marionetes durante a madrugada. Câmeras desligadas por 'erro interno'. Três bonecos da linha PRL estavam em posições diferentes pela manhã.”</p>
+
+    <h3>Relatório 005-D</h3>
+    <p class="texto-oculto">“Teste de voz da Boneca Xuxa resultou em respostas não programadas. A frase registrada foi: 'O que você sacrificaria para me ver sorrir?'. Investigação suspensa por falta de pessoal. <span class="texto-oculto">[ENTRE NÓS: O MODELO XU-91 FOI ENCONTRADO NO SUBSOLO COM 3 DEDOS HUMANOS EM SUA CAIXA DE VOZ]</span>”</p>
+
+    <h3>Relatório 006-E</h3>
+    <p>“Durante a manutenção do modelo ALF-D, um técnico sofreu desorientação e desmaio. ECG mostrou alteração cardíaca enquanto exposto ao brinquedo. Nenhuma fonte de toxina identificada.”</p>
+
+    <h3>Relatório 007-F</h3>
+    <p class="texto-oculto">“O brinquedo modelo BLG-77 (Boglin Glutão) foi encontrado fora da caixa de contenção. Câmeras registraram sua movimentação noturna, mas a gravação travou às 03h17. O segurança responsável pelo turno apresentou quadro de fome compulsiva e colapso intestinal. Relatório enviado ao setor jurídico para revisão. <span class="texto-oculto">[O CORPO DO SEGURANÇA FOI ENCONTRADO COM MARCA DE DENTES INFANTIS]</span>”</p>
+
+    <h3>Relatório 008-G</h3>
+    <p>“Um sussurro contínuo foi registrado nos dutos de ventilação da Ala Leste, mesmo com todos os brinquedos removidos. Técnicos identificaram os sons como correspondentes ao vocabulário do LNG-98 (Lango Lango), embora o brinquedo estivesse desligado. Ao religá-lo para testes, o brinquedo balbuciou o nome de Crianças antes de sofrer combustão espontânea. Relatório confidencial.”</p>
+
+    <h3>Relatório 009-H</h3>
+    <p class="texto-oculto">“Durante uma visita de investidores, a gravação institucional travou em uma imagem do setor de brinquedos suspensos. Após o incidente, três dos visitantes relataram dores de cabeça, vômitos e alucinações auditivas. Um deles descreveu ter ouvido vozes infantis gritando: ‘termina o ritual, termina o ritual’. Nenhuma evidência física foi registrada. <span class="texto-oculto">[OS 3 VISITANTES MORRERAM EM ACIDENTES DOMÉSTICOS NAS 3 SEMANAS SEGUINTES]</span>”</p>
+
+    <h3>Lista de Modelos Descontinuados</h3>
+    <ul>
+      <li>- Boneco FZ-82 "Fofão"</li>
+      <li>- Modelo XU-91 "Boneca Xuxa" <span class="texto-oculto">[ÚLTIMA LOCALIZAÇÃO: SUBSOLO 3]</span></li>
+      <li>- Série PRL "Marionetes de Porcelana"</li>
+      <li>- BLG-77 "Boglin Glutão" <span class="texto-oculto">[DESTRUÍDO?]</span></li>
+      <li>- ALF-D "Projeto ALF Gigante"</li>
+      <li>- LNG-98 "Lango Lango" <span class="texto-oculto">[AUTO-COMBUSTÃO, MAS AINDA ESCUTO SUAS VOZES]</span></li>
+    </ul>
+
+    <p><em>"Você ainda está aí com a gente?"</em></p>
+    <p class="dica">toptal.com/developers/keycode: 17, 18 e 83</p>
+    <p class="texto-oculto">Nós vemos você. Não desligue o computador.</p>
+  </div>
+
+  <!-- Página Secreta (acessível por atalho ou botão) -->
+  <div id="segredoContainer">
+    <div id="segredoContent">
+      <h2>NÍVEL 5 DE ACESSO - ARQUIVOS ULTRA-RESTRITOS</h2>
+      <p><strong>Projeto:</strong> FESTA ETERNA</p>
+      <p><strong>Status:</strong> ATIVO</p>
+      <p><strong>Localização:</strong> SUBSOLO 7</p>
+      
+      <h3>Relatório 001-Z</h3>
+      <p>"Os sujeitos de teste continuam respondendo aos estímulos mesmo após a morte cerebral. O brinquedo parece estar canalizando algo... ou alguém."</p>
+      
+      <h3>Relatório 002-Z</h3>
+      <p>"A equipe relatou ouvir risadas vindas da sala de teste mesmo quando vazia. As câmeras mostram movimento nas sombras."</p>
+      
+      <h3>Relatório 003-Z</h3>
+      <p>"O objeto parece estar se replicando. Encontramos 3 unidades adicionais esta manhã, todas idênticas ao original."</p>
+      
+      <h3>AVISO</h3>
+      <p class="clickable-secret" id="linkSecreto">
+        NÃO OLHE PARA OS OLHOS DELES. NÃO ACEITE BRINQUEDOS DAS CRIANÇAS. ELES NÃO SÃO MAIS CRIANÇAS.
+      </p>
+
+      <button id="fecharSegredo">FECHAR</button>
+    </div>
+  </div>
+
+  <script>
+    // Verificação de Senha
+    document.getElementById("acessarBtn").addEventListener("click", function() {
+      const senha = document.getElementById("senha").value;
+      if (senha.toLowerCase() === "infancia") {
+        document.getElementById("conteudoSecreto").style.display = "block";
+      } else {
+        alert("Senha incorreta. Tente novamente.");
+      }
+    });
+    
+    // Botão Secreto
+    const botaoSecreto = document.getElementById('botaoSecreto');
+    const lanternaBtn = document.getElementById('lanternaBtn');
+    const segredoContainer = document.getElementById('segredoContainer');
+    const linkSecreto = document.getElementById('linkSecreto');
+    
+    let clicksSecretos = 0;
+    const clicksNecessarios = 3;
+    
+    botaoSecreto.addEventListener('click', function(e) {
+      e.stopPropagation();
+      clicksSecretos++;
+      
+      if (clicksSecretos === clicksNecessarios) {
+        document.body.classList.add('show-secrets');
+        alert('Modo de acesso secreto ativado');
+      }
+    });
+    
+    // Modo Lanterna UV
+    lanternaBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      document.body.classList.toggle('uv-mode');
+      this.textContent = document.body.classList.contains('uv-mode') ? 'NORMAL' : 'UV';
+    });
+    
+    // Atalho de Teclado para Página Secreta
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        segredoContainer.style.display = 'flex';
+      }
+    });
+    
+    // Fechar Página Secreta
+    document.getElementById('fecharSegredo').addEventListener('click', function(e) {
+      e.stopPropagation();
+      segredoContainer.style.display = 'none';
+    });
+    
+    // Link Secreto
+    linkSecreto.addEventListener('click', function(e) {
+      e.stopPropagation();
+      window.open('index2.html', '_blank');
+    });
+    
+    // Permitir seleção no campo de senha
+    document.getElementById('senha').addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  </script>
+</body>
+</html>
